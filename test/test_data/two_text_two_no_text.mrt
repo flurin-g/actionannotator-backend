@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE Meeting SYSTEM "http://www.icsi.berkeley.edu/Speech/mr/Meeting1.dtd">
+
+<Meeting Session="Bdb001" DateTimeStamp="2001-02-16-1000" Version="2" VersionDate="Jan 7 2004">
+
+  <Preamble>
+    <Notes>
+      fe008 joined towards end of meeting.
+    </Notes>
+    <Channels>
+      <Channel Name="chan1" Mic="s1" Transmission="w1" Gain="8" AudioFile="chan1.sph"/>
+      <Channel Name="chan2" Mic="s1" Transmission="w1" Gain="8" AudioFile="chan2.sph"/>
+      <Channel Name="chan3" Mic="s1" Transmission="w1" Gain="8" AudioFile="chan3.sph"/>
+      <Channel Name="chan4" Mic="s1" Transmission="w1" Gain="8" AudioFile="chan4.sph"/>
+      <Channel Name="chan6" Mic="c2" Transmission="u1" Gain="8" AudioFile="chan6.sph"/>
+      <Channel Name="chan7" Mic="c2" Transmission="u1" Gain="8" AudioFile="chan7.sph"/>
+      <Channel Name="chan8" Mic="s1" Transmission="j1" Gain="11" AudioFile="chan8.sph"/>
+      <Channel Name="chanB" Mic="s1" Transmission="j1" Gain="11" AudioFile="chanB.sph"/>
+      <Channel Name="chanC" Mic="u3" Transmission="j1" Gain="12" AudioFile="chanC.sph"/>
+      <Channel Name="chanD" Mic="u3" Transmission="j1" Gain="12" AudioFile="chanD.sph"/>
+      <Channel Name="chanE" Mic="c2" Transmission="u1" Gain="8" AudioFile="chanE.sph"/>
+      <Channel Name="chanF" Mic="c2" Transmission="u1" Gain="8" AudioFile="chanF.sph"/>
+    </Channels>
+    <Participants DB="icsi1.spk">
+      <Participant Name="mn017" Channel="chan1"/>
+      <Participant Name="me001" Channel="chan2"/>
+      <Participant Name="me011" Channel="chan3"/>
+      <Participant Name="me018" Channel="chan4"/>
+      <Participant Name="fe008" Channel="chan8"/>
+      <Participant Name="fe016" Channel="chanB"/>
+    </Participants>
+  </Preamble>
+
+
+  <Transcript StartTime="0.0" EndTime="3021.968">
+
+    <Segment StartTime="0.000" EndTime="3.956" Participant="me018">
+      <NonVocalSound Description="mike noise"/>
+    </Segment>
+    <Segment StartTime="0.056" EndTime="1.861" Participant="me011">
+      Yeah, we had a long discussion about
+    </Segment>
+    <Segment StartTime="2.674" EndTime="6.315" Participant="me011">
+      how much w- how easy we want to make it for people to bleep things out. So -
+    </Segment>
+    <Segment StartTime="5.100" EndTime="7.881" Participant="me018">
+      <NonVocalSound Description="mike noise"/>
+    </Segment>
+
+  </Transcript>
+</Meeting>
