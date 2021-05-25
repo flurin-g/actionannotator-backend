@@ -1,7 +1,7 @@
 from unittest import TestCase
 import xml.etree.ElementTree as ET
 
-from src.main import parse_xml, format_utterance, parse_files, file_contains_transcript
+from src.business_logic import parse_xml, format_utterance, parse_files, file_contains_transcript
 
 ICSI_TEST_TRANSCRIPT_PATH = 'test_data/Bdb001.mrt'
 ICSI_TEST_TRANSCRIPT_NO_PARTICIPANT = 'test_data/Bro011.mrt'
