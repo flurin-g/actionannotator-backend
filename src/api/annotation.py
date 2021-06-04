@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
-from src.api.transcript_annotation import router
-from src.data_access.annotation import add_annotation, retrieve_annotations
-from src.data_access.transcript_annotation import retrieve_transcript_annotation
+from src.data_access.annotation import add_annotation, retrieve_annotations, retrieve_annotation
+from src.data_access.transcript_annotation import retrieve_transcript_annotations
 from src.data_model.all import ResponseModel, ErrorResponseModel
 from src.data_model.annotation import AnnotationSchema
 
@@ -44,8 +43,12 @@ async def get_annotation(annotation_id):
            shall be shown
     :return: Annotation meta-data as well as a list of oll the transcripts contained
     """
-    transcript_annotation = await retrieve_transcript_annotation(annotation_id)
+    annotation = await retrieve_annotation(annotation_id)
+    transcript_annotation = {
+        **annotation,
+        "transcripts": await retrieve_transcript_annotations(annotation_id)
+    }
 
     if transcript_annotation:
-        return ResponseModel(transcript_annotation)
+        return ResponseModel(transcript_annotation, "Annotation retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "Annotation doesn't exist.")

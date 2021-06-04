@@ -17,5 +17,3 @@ class AnnotationSchema(BaseModel):
                 ]
             }
         }
-
-# ToDo: how to implement the UpdateTranscriptModel, and are additional models needed?

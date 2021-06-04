@@ -24,9 +24,7 @@ async def add_transcript(transcript_data: dict) -> dict:
 
 
 async def retrieve_transcript(transcript_id: str) -> dict:
-    transcript = await transcript_collection.find_one({"_id": ObjectId(transcript_id)})
-    if transcript:
-        return transcript_helper(transcript)
+    return await transcript_collection.find_one({"_id": ObjectId(transcript_id)})
 
 
 async def update_transcript(transcript_id: str, data: dict):
