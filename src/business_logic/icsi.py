@@ -1,6 +1,9 @@
+import asyncio
 import os
 import xml.etree.ElementTree as ET
 from typing import List
+
+from src.data_access.corpus import add_corpus
 
 ICSI_TRANSCRIPT_PATH = 'data/ICSI/transcripts'
 
@@ -29,19 +32,21 @@ def parse_xml(file_path: str, keep_empty: bool = False) -> dict:
     transcript = meeting[1]
 
     return {
-        "session": meeting.attrib["Session"],
+        "name": meeting.attrib["Session"],
         "transcript": [format_utterance(utterance) for utterance in transcript if keep_utterance(utterance)]
     }
 
 
-#def init_icsi():
-#    sessions = parse_files(ICSI_TRANSCRIPT_PATH, parse_xml)
-#    session_ids = insert_into_icsi(sessions)
-    # ToDo: session_ids needs to be stored, to access sessions (interviews by their ids
-    #       consider using an object for that
+async def init_corpus(name: str, parser: callable) -> None:
+    # preprocess corpus
+    corpus = {
+        "name": name,
+        "transcripts": parse_files(ICSI_TRANSCRIPT_PATH, parser)
+    }
+    await add_corpus(corpus)
 
 
-if __name__ == '__main__':
-    res = parse_files(ICSI_TRANSCRIPT_PATH, parse_xml)[0]
-    for segment in res["transcript"]:
-        print(segment)
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(init_corpus("ICSI", parse_xml))
+

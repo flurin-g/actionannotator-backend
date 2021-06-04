@@ -1,40 +1,39 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
-from data_access import (
+from src.data_access.transcript import (
     add_transcript,
     delete_transcript,
     retrieve_transcript,
     retrieve_transcripts,
     update_transcript,
 )
-from db_model import (
-    ErrorResponseModel,
-    ResponseModel,
-    TranscriptSchema,
+from src.data_model.transcript_annotation import (
+    TranscriptAnnotationSchema,
     UpdateTranscriptModel,
 )
+from src.data_model.all import ResponseModel, ErrorResponseModel
 
 router = APIRouter()
 
 
 @router.post("/", response_description="Transcript data added into the database")
-async def add_transcript_data(transcript: TranscriptSchema = Body(...)):
+async def add_transcript_data(transcript: TranscriptAnnotationSchema = Body(...)):
     transcript = jsonable_encoder(transcript)
     new_transcript = await add_transcript(transcript)
     return ResponseModel(new_transcript, "Transcript added successfully.")
 
 
-@router.get("/", response_description="Transcript retrieved")
-async def get_transcript():
-    transcript = await retrieve_transcripts()
+@router.get("/{id}", response_description="Transcripts retrieved")
+async def get_transcripts(corpus_id):
+    transcript = await retrieve_transcripts(corpus_id)
     if transcript:
         return ResponseModel(transcript, "Transcript data retrieved successfully")
     return ResponseModel(transcript, "Empty list returned")
 
 
 @router.get("/{id}", response_description="Transcript data retrieved")
-async def get_transcript_data(transcript_id):
+async def get_transcript(transcript_id):
     transcript = await retrieve_transcript(transcript_id)
     if transcript:
         return ResponseModel(transcript, "Transcript data retrieved successfully")

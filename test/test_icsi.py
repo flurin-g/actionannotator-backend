@@ -1,12 +1,12 @@
 from unittest import TestCase
 import xml.etree.ElementTree as ET
 
-from src.business_logic import parse_xml, format_utterance, parse_files, file_contains_transcript
+from src.business_logic.icsi import parse_xml, format_utterance, parse_files, file_contains_transcript
 
-ICSI_TEST_TRANSCRIPT_PATH = 'test_data/Bdb001.mrt'
-ICSI_TEST_TRANSCRIPT_NO_PARTICIPANT = 'test_data/Bro011.mrt'
+ICSI_TEST_TRANSCRIPT_PATH = 'test_data/ICSI_raw/Bdb001.mrt'
+ICSI_TEST_TRANSCRIPT_NO_PARTICIPANT = 'test_data/ICSI_raw/Bro011.mrt'
 
-ICSI_2_TEXT_2_NO_TEXT = 'test_data/two_text_two_no_text.mrt'
+ICSI_2_TEXT_2_NO_TEXT = 'test_data/ICSI_raw/two_text_two_no_text.mrt'
 
 TEST_UTTERANCE_NO_TEXT = """<Segment StartTime="0.000" EndTime="3.956" Participant="me018">
       <NonVocalSound Description="mike noise"/>
@@ -39,7 +39,7 @@ class Test(TestCase):
         self.assertIsInstance(res, dict)
 
     def test_parse_files(self):
-        res = parse_files('test_data', parse_xml)
+        res = parse_files('test_data/ICSI_raw', parse_xml)
         self.assertEqual(3, len(res))
 
     def test_file_contains_transcript_neg_preambles(self):
