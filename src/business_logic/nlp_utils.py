@@ -2,16 +2,11 @@ from typing import List
 
 import nltk
 
+from src.data_model.transcript_annotation import ActionItemState
+
 tokenizer = nltk.word_tokenize
 
 
-def nlp_pipeline(transcript: dict, keywords: list) -> list[dict]:
-    def detect_keywords(utterance: list) -> List[str]:
-        return [keyword for keyword in keywords if keyword in utterance]
+def nlp_pipeline(transcript: dict) -> list[dict]:
 
-    return [
-        {
-            "keywords": detect_keywords(tokenizer(utterance["text"].lower())),
-            "isActionItem": "unknown"
-        } for utterance in transcript
-    ]
+    return [{"isActionItem": ActionItemState.maybe.value} for _ in transcript]

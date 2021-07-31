@@ -1,17 +1,32 @@
-from typing import Optional, List
+from enum import Enum
+from typing import List, Optional
 
-from bson import ObjectId
 from pydantic import BaseModel, Field
 
-
-class UtteranceAnnotationSchema(BaseModel):
-    keywords: List[str] = Field(...)
-    isActionItem: str = "unknown"
+from src.data_model.mongo_base import MongoModel, PyObjectId
 
 
-class TranscriptAnnotationSchema(BaseModel):
-    annotationId: str = Field(...)
-    utterances: List[UtteranceAnnotationSchema] = Field(...)
+class ActionItemState(str, Enum):
+    maybe = "maybe"
+    no = "no"
+    yes = "yes"
+
+
+class UtteranceAnnotationIn(BaseModel):
+    isActionItem: ActionItemState = Field(...)
+
+
+class UtteranceAnnotationOut(BaseModel):
+    isActionItem: ActionItemState = Field(...)
+    text: str = Field(...)
+    speaker: str = Field(...)
+
+
+class TranscriptAnnotationOut(MongoModel):
+    annotationId: Optional[PyObjectId]
+    transcriptId: Optional[PyObjectId]
+    name: Optional[str]
+    utterances: Optional[List[UtteranceAnnotationOut]]
 
     class Config:
         schema_extra = {
@@ -19,30 +34,16 @@ class TranscriptAnnotationSchema(BaseModel):
                 "annotationId": 123456,
                 "utterances": [
                     {
-                        "keyword": "foo",
-                        "isActionItem": "yes"  # check if enums can be used
+                        "isActionItem": "maybe"
                     },
                     {
-                        "keyword": "",
-                        "isActionItem": "unknown"  # or 'yes' / 'no'
+                        "isActionItem": "yes"
                     }
                 ]
             }
         }
 
 
-class UpdateTranscriptModel(BaseModel):
-    speaker: Optional[str]
-    text: Optional[List[str]]
-    actionDetected: Optional[bool]
-    truePositive: Optional[bool]
+class TranscriptAnnotationIn(MongoModel):
+    utterances: Optional[List[UtteranceAnnotationIn]]
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "speaker": "me006",
-                "text": ["I", "do", "need", "your", "names"],
-                "actionDetected": True,
-                "truePositive": False
-            }
-        }

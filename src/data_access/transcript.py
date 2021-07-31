@@ -1,11 +1,12 @@
 from bson.objectid import ObjectId
 
 from src.data_access.mongo_connection import transcript_collection
+from src.data_model.mongo_base import PyObjectId
 
 
 def transcript_helper(transcript) -> dict:
     return {
-        "id": str(transcript["_id"]),
+        "id": transcript["_id"],
         "speaker": transcript["speaker"],
         "text": transcript["text"],
         "actionDetected": transcript["actionDetected"],
@@ -13,8 +14,8 @@ def transcript_helper(transcript) -> dict:
     }
 
 
-async def retrieve_transcripts(corpus_id: str):
-    return [transcript async for transcript in transcript_collection.find({"corpusId": ObjectId(corpus_id)})]
+async def retrieve_transcripts(corpus_id: PyObjectId):
+    return [transcript async for transcript in transcript_collection.find({"corpusId": corpus_id})]
 
 
 async def add_transcript(transcript_data: dict) -> dict:
@@ -27,7 +28,7 @@ async def retrieve_transcript(transcript_id: str) -> dict:
     return await transcript_collection.find_one({"_id": ObjectId(transcript_id)})
 
 
-async def update_transcript(transcript_id: str, data: dict):
+async def update_transcript(transcript_id: str, data: dict) -> bool:
     # Return false if an empty request body is sent.
     if len(data) < 1:
         return False

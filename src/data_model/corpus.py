@@ -1,19 +1,25 @@
-from typing import Optional, List
+from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from src.data_model.mongo_base import MongoModel
 
 
-class AnnotationSchema(BaseModel):
-    name: str = Field(...)
-    transcripts: List[dict] = Field(...)
+class BaseCorpus(str, Enum):
+    icsi = "ICSI"
+    isl = "ISL"
+    ami = "AMI"
+
+
+class Corpus(MongoModel):
+    name: BaseCorpus = Field(...)
 
     class Config:
         schema_extra = {
-            "example": {
-                "name": "My Fancy Annotation",
-                "transcripts": [
-                    {"name": "Bdb001"},
-                    {"name": "Bed002"}
-                ]
-            }
+            "example":
+                {
+                    "corpusId": "123456",
+                    "name": "ICSI"
+                }
         }
+

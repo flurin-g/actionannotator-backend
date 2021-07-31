@@ -1,14 +1,14 @@
+from typing import List
+
 from fastapi import APIRouter
 
+from src.api.helper import raise_if_none
 from src.data_access.corpus import retrieve_corpora
-from src.data_model.all import ResponseModel
+from src.data_model.corpus import Corpus
 
 router = APIRouter()
 
 
-@router.get("/", response_description="Transcript retrieved")
+@router.get("/", response_model=List[Corpus])
 async def get_corpora():
-    corpora = await retrieve_corpora()
-    if corpora:
-        return ResponseModel(corpora, "Corpora data retrieved successfully")
-    return ResponseModel(corpora, "Empty list returned")
+    return raise_if_none(await retrieve_corpora(), 404, "No corpora exist")

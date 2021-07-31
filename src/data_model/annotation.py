@@ -1,22 +1,42 @@
+from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel, Field
+from pydantic import Field, BaseModel
+
+from src.data_model.corpus import BaseCorpus
+# ToDo: consider using date-time for date field in Annotation Schema
+from src.data_model.mongo_base import MongoModel
 
 
-class AnnotationSchema(BaseModel):
+class Annotation(BaseModel):
     name: str = Field(...)
-    date: str = Field(...)
-    baseCorpus: str = Field(...)
-    keywords: List[str] = Field(...)
+    baseCorpus: BaseCorpus = Field(...)
+
+
+class AnnotationIn(Annotation):
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "My Fancy Annotation",
+                "baseCorpus": "ICSI"
+            }
+        }
+
+
+class AnnotationOut(Annotation, MongoModel):
+    date: Optional[datetime] = Field(...)
+    transcripts: Optional[List[dict]]
 
     class Config:
         schema_extra = {
             "example": {
                 "name": "My Fancy Annotation",
-                "date": "4.5.2012",
+                "date": "2012-05-23T17:15:02",
                 "baseCorpus": "ICSI",
-                "keywords": ['foo', 'bar', 'baz']
+                "transcript": [
+                    {
+
+                    }
+                ]
             }
         }
-
-# ToDo: how to implement the UpdateTranscriptModel, and are additional models needed?

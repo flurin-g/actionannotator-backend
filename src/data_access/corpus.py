@@ -1,15 +1,16 @@
 from typing import List
 
 from src.data_access.mongo_connection import corpus_collection, transcript_collection
+from src.data_model.corpus import BaseCorpus, Corpus
 
 
-async def retrieve_corpora():
-    return [{"corpusId": str(corpus["_id"]), "name": corpus["name"]} async for corpus in corpus_collection.find()]
+async def retrieve_corpora() -> List[Corpus]:
+    return [Corpus(**corpus) async for corpus in corpus_collection.find()]
 
 
-async def retrieve_corpus_by_name(name: str):
+async def retrieve_corpus_by_name(base_corpus: BaseCorpus):
     corpora = await retrieve_corpora()
-    return [corpus for corpus in corpora if corpus["name"] == name][0]
+    return [corpus for corpus in corpora if BaseCorpus(corpus.name) == base_corpus][0]
 
 
 async def add_corpus(corpus_data: dict) -> None:
@@ -18,7 +19,7 @@ async def add_corpus(corpus_data: dict) -> None:
 
     await transcript_collection.insert_many(
         [{
-            "corpusId": str(corpus_id),
+            "corpusId": corpus_id,
             "name": transcript["name"],
             "transcript": transcript["transcript"]
         } for transcript in corpus_data["transcripts"]]
